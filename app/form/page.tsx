@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -8,6 +8,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { supabase } from "@/utils/supabase/config";
+import { redirect } from "next/navigation";
+import { authCreateClient } from "@/utils/supabase/server";
+import Footer from "@/components/footer";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface FormProps {
   cookieValue: string | null;
@@ -15,10 +20,15 @@ interface FormProps {
 
 const Form: React.FC = () => {
   const [formData, setFormData] = useState({
-    name: "",
+    fname: "",
+    mname: "",
+    lname: "",
+    sfx: "",
     age: "",
     address: "",
+    gender: "",
   });
+  console.log(formData);
   const [error, setError] = useState<string | null>(null);
 
   const handleLimitAgeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,10 +36,17 @@ const Form: React.FC = () => {
       setFormData({ ...formData, age: e.target.value });
   };
 
+  const handleGenderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      gender: e.target.value, // Update formData directly with gender value
+    });
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value, 
+      [e.target.name]: e.target.value,
     });
     console.log(formData);
     console.log(formData.age.length);
@@ -37,74 +54,183 @@ const Form: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.age || !formData.address) {
+    if (
+      !formData.fname ||
+      !formData.lname ||
+      !formData.age ||
+      !formData.address ||
+      !formData.gender
+    ) {
       setError("Please fill in all the fields correctly");
       return;
     }
+    
+    const fullname =
+      formData.lname +
+      ", " +
+      formData.fname +
+      " " +
+      formData.mname +
+      " " +
+      formData.sfx +
+      " ";
+      
+    try {
+      // Insert data into Supabase
+      const { data, error } = await supabase
+        .from("info")
+        .insert([
+          {
+            name: fullname,
+            age: formData.age,
+            address: formData.address,
+            gender: formData.gender, // Ensure gender is sent correctly
+          },
+        ])
+        .select();
 
-    const { data, error } = await supabase
-      .from("info")
-      .insert([
-        { name: formData.name, age: formData.age, address: formData.address },
-      ])
-      .select();
-
-    if (error) console.log(error);
-    setError("Please fill in all the fields correctly");
-    if (data) console.log(data);
-    setError(null);
+      if (error) {
+        console.error("Supabase insert error:", error.message);
+        setError("Error submitting form. Please try again.");
+      } else {
+        console.log("Data submitted successfully:", data);
+        setError(null); // Clear error on success
+      }
+    } catch (err) {
+      console.error("Form submission error:", err);
+      setError("Unexpected error occurred. Please try again.");
+    }
   };
-
   return (
-    <Card className="w-[350px] h-full">
+    <Card className="w-auto h-full">
       <CardHeader>
         <CardTitle> Welcome to WebCensus!</CardTitle>
         <CardDescription>Please fill up the form below.</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="flex w-full items-center gap-4  ">
-          <div className="flex flex-col space-y-1.5 mb">
-            <form onSubmit={handleSubmit} className="grid grid-cols-3 gap-4">
-              <label htmlFor="name">Name:</label>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <div className="flex gap-3">
+              <label htmlFor="name" className="w-[100px]">
+                Name:
+              </label>
+              <div className="flex gap-2 ">
+                <input
+                  required
+                  type="text"
+                  id="name"
+                  name="lname"
+                  value={formData.lname}
+                  onChange={handleChange}
+                  className="col-span-2 p-1 rounded focus:outline-none mb-5 "
+                  placeholder="Surname"
+                />
+
+                <input
+                  required
+                  type="text"
+                  id="name"
+                  name="fname"
+                  value={formData.fname}
+                  onChange={handleChange}
+                  className="col-span-2 p-1 rounded focus:outline-none mb-5 "
+                  placeholder="First Name"
+                />
+                <input
+                  type="text"
+                  id="name"
+                  name="mname"
+                  value={formData.mname}
+                  onChange={handleChange}
+                  className="col-span-2 p-1 rounded focus:outline-none mb-5 "
+                  placeholder="Middle Name"
+                />
+                <input
+                  type="text"
+                  id="name"
+                  name="sfx"
+                  value={formData.sfx}
+                  onChange={handleChange}
+                  className="col-span-2 p-1 rounded focus:outline-none mb-5 w-[100px]"
+                  placeholder="Suffix"
+                />
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <label htmlFor="age" className="w-[100px]">
+                Age:
+              </label>
               <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                className="col-span-2 p-1 text-white rounded focus:outline-none mb-5 "
-                placeholder="Surname/First Name/M.I"
-              />
-              <label htmlFor="age">Age:</label>
-              <input
+                required
                 type="number"
                 id="age"
                 name="age"
                 inputMode="numeric"
                 maxLength={3}
+                placeholder="Age"
                 value={formData.age}
-                onChange={handleChange}
-                className="col-span-2 p-1 text-white rounded focus:outline-none mb-5 "
+                onChange={handleLimitAgeInput}
+                className="col-span-2 p-1 rounded focus:outline-none mb-5 "
               />
-              <label htmlFor="address">Address:</label>
+            </div>
+            <div className="flex gap-3">
+              <label htmlFor="address" className="w-[100px]">
+                Address:
+              </label>
               <input
+                required
                 type="text"
                 id="address"
                 name="address"
+                placeholder="Address"
                 value={formData.address}
                 onChange={handleChange}
-                className="col-span-2 p-1 text-white rounded focus:outline-none mb-5"
+                className="col-span-2 p-1 rounded focus:outline-none mb-5"
               />
-              <button
-                onClick={handleSubmit}
-                className="col-span-3 bg-gray-900 outline-double-gray-500 text-white p-2 rounded hover:bg-gray-700 mt-4 mb-4"
-              >
-                Submit
-              </button>
+            </div>
+            <div className="flex gap-3">
+              <label className="w-[100px]">Gender:</label>
+              <div className="flex gap-4">
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="Male"
+                    onChange={handleGenderChange}
+                    checked={formData.gender === "Male"}
+                    className="mr-2"
+                  />
+                  Male
+                </label>
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="Female"
+                    onChange={handleGenderChange}
+                    checked={formData.gender === "Female"}
+                    className="mr-2"
+                  />
+                  Female
+                </label>
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="Other"
+                    onChange={handleGenderChange}
+                    checked={formData.gender === "Other"}
+                    className="mr-2"
+                  />
+                  Other
+                </label>
+              </div>
+            </div>
 
-              {error && <p className="error">{error}</p>}
-            </form>
-          </div>
+            <Button onClick={handleSubmit}>Submit</Button>
+
+            {error && <p className="error">{error}</p>}
+          </form>
         </div>
       </CardContent>
     </Card>
