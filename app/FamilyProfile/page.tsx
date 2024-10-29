@@ -8,18 +8,17 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { supabase } from "@/utils/supabase/config";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { authCreateClient } from "@/utils/supabase/server";
 import Footer from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { insertDataForm } from "@/components/api/api";
 
-interface FormProps {
-  cookieValue: string | null;
-}
-
 const Form: React.FC = () => {
+  const router = useRouter();
+  const [inputValue, setInputValue] = useState("");
+
   const [formData, setFormData] = useState({
     fname: "",
     mname: "",
@@ -36,7 +35,10 @@ const Form: React.FC = () => {
     religion: "",
     sector: "",
     pwd: "",
-    lactating: 1,
+    lactating: "",
+    housenumber: "",
+    nooffamilymember: "",
+    contactnofamily: "",
   });
 
   console.log(formData);
@@ -47,52 +49,10 @@ const Form: React.FC = () => {
       setFormData({ ...formData, age: e.target.value });
   };
 
-  const handleGenderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      gender: e.target.value,
-
-      // Update formData directly with gender value
-    });
-  };
-  const handleCivilStatus = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      civilstatus: e.target.value, // Update formData directly with gender value
-    });
-  };
-  const handleOccupation = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      occupation: e.target.value, // Update formData directly with gender value
-    });
-  };
-  const handleReligion = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      religion: e.target.value, // Update formData directly with gender value
-    });
-  };
-  const handleEducation = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      education: e.target.value, // Update formData directly with gender value
-    });
-  };
-  const handleSector = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      sector: e.target.value, // Update formData directly with gender value
-    });
-  };
-  const handleLactating = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      lactating: 1, // Update formData directly with gender value
-    });
-  };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setInputValue(value.charAt(0).toUpperCase() + value.slice(1));
+
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -101,30 +61,10 @@ const Form: React.FC = () => {
     console.log(formData.age.length);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (
-      !formData.fname ||
-      !formData.lname ||
-      !formData.age ||
-      !formData.gender
-      // !formData.familymember ||
-      // // !formData.birthday ||
-      // !formData.civilstatus ||
-      // !formData.occupation ||
-      // !formData.education ||
-      // !formData.religion ||
-      // !formData.sector ||
-      // !formData.pwd ||
-      // !formData.lactating
-    ) {
-      setError("Please fill in all the fields correctly");
-      return;
-    }
-    var error = await insertDataForm(formData);
-    setError(error);
-  };
-
+ const Submit = async (e: React.FormEvent) => {
+      e.preventDefault();
+    };
+ 
   return (
     <Card className="w-auto h-full">
       <CardHeader>
@@ -136,7 +76,7 @@ const Form: React.FC = () => {
       </CardTitle>
       <CardContent>
         <div className="flex w-full items-center gap-4  ">
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <form onSubmit={Submit} className="flex flex-col gap-4">
             <div className="flex gap-3 items-center w-full">
               <label className="w-[100px]">No. of Family Members</label>
               <input
@@ -146,20 +86,20 @@ const Form: React.FC = () => {
                 inputMode="numeric"
                 maxLength={2}
                 placeholder="No. of Family Members"
-                value={formData.age}
-                onChange={handleLimitAgeInput}
-                className="col-span-2 p-1 rounded focus:outline-none mb-5 "
+                value={formData.nooffamilymember}
+                onChange={handleChange}
+                className="col-span-2 p-1 rounded focus:outline-none  "
               />
-              <label className="w-[100px]">No. of Family</label>
+              <label className="w-[100px]">Contact number of Family</label>
               <input
                 type="number"
                 id="numberoffamily"
                 name="numberoffamily"
                 inputMode="numeric"
-                maxLength={3}
+                maxLength={11}
                 placeholder="No. of Family"
-                value={formData.age}
-                onChange={handleLimitAgeInput}
+                value={formData.contactnofamily}
+                onChange={handleChange}
                 className="col-span-2 p-1 rounded focus:outline-none"
               />
               <label className="w-[80px]">House no.</label>
@@ -170,8 +110,8 @@ const Form: React.FC = () => {
                 inputMode="numeric"
                 maxLength={3}
                 placeholder="House no."
-                value={formData.age}
-                onChange={handleLimitAgeInput}
+                value={formData.housenumber}
+                onChange={handleChange}
                 className="col-span-2 p-1 rounded focus:outline-none"
               />
               <label className="w-[50px]">BC no.</label>
@@ -213,8 +153,8 @@ const Form: React.FC = () => {
                 maxLength={3}
                 placeholder="KM"
                 value={formData.age}
-                onChange={handleLimitAgeInput}
-                className="col-span-2 p-1 rounded focus:outline-none mb-5 "
+                onChange={handleChange}
+                className="col-span-2 p-1 rounded focus:outline-none "
               />
             </div>
             <div className="flex gap-3">
@@ -304,7 +244,7 @@ const Form: React.FC = () => {
                     type="radio"
                     name="gender"
                     value="Male"
-                    onChange={handleGenderChange}
+                    onChange={handleChange}
                     checked={formData.gender === "Male"}
                     className="mr-2"
                   />
@@ -315,7 +255,7 @@ const Form: React.FC = () => {
                     type="radio"
                     name="gender"
                     value="Female"
-                    onChange={handleGenderChange}
+                    onChange={handleChange}
                     checked={formData.gender === "Female"}
                     className="mr-2"
                   />
@@ -326,7 +266,7 @@ const Form: React.FC = () => {
                     required
                     type="text"
                     id="name"
-                    name="lname"
+                    name="gender"
                     value={formData.gender}
                     onChange={handleChange}
                     className="mr-2 "
@@ -343,7 +283,7 @@ const Form: React.FC = () => {
                     type="radio"
                     name="civilstatus"
                     value="S"
-                    onChange={handleCivilStatus}
+                    onChange={handleChange}
                     checked={formData.civilstatus === "S"}
                     className="mr-2"
                   />
@@ -354,7 +294,7 @@ const Form: React.FC = () => {
                     type="radio"
                     name="civilstatus"
                     value="M"
-                    onChange={handleCivilStatus}
+                    onChange={handleChange}
                     checked={formData.civilstatus === "M"}
                     className="mr-2"
                   />
@@ -365,7 +305,7 @@ const Form: React.FC = () => {
                     type="radio"
                     name="civilstatus"
                     value="LI"
-                    onChange={handleCivilStatus}
+                    onChange={handleChange}
                     checked={formData.civilstatus === "LI"}
                     className="mr-2"
                   />
@@ -381,7 +321,7 @@ const Form: React.FC = () => {
                     type="radio"
                     name="occupation"
                     value="GE"
-                    onChange={handleOccupation}
+                    onChange={handleChange}
                     checked={formData.occupation === "GE"}
                     className="mr-2"
                   />
@@ -392,7 +332,7 @@ const Form: React.FC = () => {
                     type="radio"
                     name="occupation"
                     value="PE"
-                    onChange={handleOccupation}
+                    onChange={handleChange}
                     checked={formData.occupation === "PE"}
                     className="mr-2"
                   />
@@ -403,7 +343,7 @@ const Form: React.FC = () => {
                     type="radio"
                     name="occupation"
                     value="OFW"
-                    onChange={handleOccupation}
+                    onChange={handleChange}
                     checked={formData.occupation === "OFW"}
                     className="mr-2"
                   />
@@ -431,7 +371,7 @@ const Form: React.FC = () => {
                     type="radio"
                     name="education"
                     value="Elem Graduate"
-                    onChange={handleEducation}
+                    onChange={handleChange}
                     checked={formData.education === "Elem Graduate"}
                     className="mr-2"
                   />
@@ -442,7 +382,7 @@ const Form: React.FC = () => {
                     type="radio"
                     name="education"
                     value="HS Graduate"
-                    onChange={handleEducation}
+                    onChange={handleChange}
                     checked={formData.education === "HS Graduate"}
                     className="mr-2"
                   />
@@ -453,7 +393,7 @@ const Form: React.FC = () => {
                     type="radio"
                     name="education"
                     value="College"
-                    onChange={handleEducation}
+                    onChange={handleChange}
                     checked={formData.education === "College"}
                     className="mr-2"
                   />
@@ -481,7 +421,7 @@ const Form: React.FC = () => {
                     type="radio"
                     name="religion"
                     value="RC"
-                    onChange={handleReligion}
+                    onChange={handleChange}
                     checked={formData.religion === "RC"}
                     className="mr-2"
                   />
@@ -492,7 +432,7 @@ const Form: React.FC = () => {
                     type="radio"
                     name="religion"
                     value="INC"
-                    onChange={handleReligion}
+                    onChange={handleChange}
                     checked={formData.religion === "INC"}
                     className="mr-2"
                   />
@@ -503,7 +443,7 @@ const Form: React.FC = () => {
                     type="radio"
                     name="religion"
                     value="BC"
-                    onChange={handleReligion}
+                    onChange={handleChange}
                     checked={formData.religion === "BC"}
                     className="mr-2"
                   />
@@ -531,7 +471,7 @@ const Form: React.FC = () => {
                     type="radio"
                     name="sector"
                     value="Sr.C"
-                    onChange={handleSector}
+                    onChange={handleChange}
                     checked={formData.sector === "Sr.C"}
                     className="mr-2"
                   />
@@ -542,7 +482,7 @@ const Form: React.FC = () => {
                     type="radio"
                     name="sector"
                     value="SP"
-                    onChange={handleSector}
+                    onChange={handleChange}
                     checked={formData.sector === "SP"}
                     className="mr-2"
                   />
@@ -553,7 +493,7 @@ const Form: React.FC = () => {
                     type="radio"
                     name="sector"
                     value="4PS"
-                    onChange={handleSector}
+                    onChange={handleChange}
                     checked={formData.sector === "4PS"}
                     className="mr-2"
                   />
@@ -562,7 +502,7 @@ const Form: React.FC = () => {
               </div>
             </div>
             <div className="flex gap-3">
-              <label className="w-[80px] ">PWD:</label>
+              <label className="w-[80px] mt-6">PWD:</label>
               <div className="flex gap-4">
                 <label className="flex items-center">
                   <input
@@ -587,7 +527,7 @@ const Form: React.FC = () => {
                       type="radio"
                       name="lactating"
                       value="lactating"
-                      onChange={handleLactating}
+                      onChange={handleChange}
                       checked={formData.gender === "Lactating"}
                       className="mr-2"
                     />
@@ -609,7 +549,7 @@ const Form: React.FC = () => {
                 </div>
               </div>
             </div>
-            <Button onClick={handleSubmit}>Submit</Button>
+            <Button>Submit and Next</Button>
 
             {error && <p className="error">{error}</p>}
           </form>

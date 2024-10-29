@@ -12,9 +12,12 @@ export async function insertDataForm(formData: any) {
       " " +
       formData.sfx +
       " ";
-    const familyMemberId = uuidv4();
+    const familyMemberId = Math.floor(Math.random() * 10000);
+
+    const currentDate = new Date().toISOString();
     const { data, error } = await supabase
-      .from("FamilyMember_duplicate")
+      .from("FamilyMember")
+
       .insert([
         {
           Name: fullname,
@@ -29,21 +32,60 @@ export async function insertDataForm(formData: any) {
           Sector: formData.sector,
           PWD: formData.pwd,
           Lactating: formData.lactating,
+          FamilyMemberId: familyMemberId,
         },
       ])
       .select();
 
     console.log(data);
-    if (error) {
-      console.error("Supabase insert error:", error.message);
 
-      return "Error submitting form. Please try again.";
-    } else {
-      console.log("Data submitted successfully:", data);
-      return "Successfully Submitted";
+    if (error) {
+      console.error("Supabase FamilyMember insert error:", error.message);
+
+      return false;
     }
+    const familyid = Math.floor(Math.random() * 10000);
+
+    const { data: data1, error: error1 } = await supabase
+      .from("FamilyProfile_duplicate")
+      .insert([
+        {
+          FamilyMemberId: familyMemberId,
+          FamilyId: familyid,
+          HouseNumber: formData.housenumber,
+          NoOfFamilyMember: formData.nooffamilymember,
+          DateCreated: new Date().toISOString(),
+        },
+      ]);
+
+    if (error1) {
+      console.error("Supabase FamilyProfile insert error:", error1.message);
+      return false;
+    }
+    const { data: data2, error: error2 } = await supabase
+      .from("Location")
+      .insert([
+        {
+          LocationId:location,
+          Street:formData.location,
+          Block:formData.block,
+          Lot:formData.lot,
+          Phase:formData.phase,
+          Kilometer:formData.km,
+          SubdivisionName:formData.subdivision,
+
+        },
+      ]);
+
+    if (error2) {
+      console.error("Supabase Location insert error:", error2.message);
+      return false;
+    }
+
+    console.log("FamilyMember data submitted successfully:", data);
+    console.log("FamilyProfile data submitted successfully:", data1);
+    return true;
   } catch (err) {
     console.error("Form submission error:", err);
-    return "Unexpected error occurred. Please try again.";
   }
 }

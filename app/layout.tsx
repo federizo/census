@@ -29,14 +29,12 @@ export default function RootLayout({
       <body className="bg-background text-foreground">
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
           <main className="min-h-screen flex flex-col items-center">
             <div className="flex-1 w-screen h-screen flex flex-col gap-20 items-center">
-              
-              
               <div className="flex flex-col ">
                 <div className="flex flex-col gap-20 w-screen h-screen">
                   {children}
