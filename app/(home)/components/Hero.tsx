@@ -23,12 +23,11 @@ const Hero = () => {
               theme === "light" ? "bg-black" : "bg-white"
             }`}
           />
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem, libero?
-          Deleniti tempora sint aut necessitatibus nam quibusdam error fugit!
-          Temporibus molestias officia enim impedit ut ex dolorem magnam
-          similique, a qui, rem illo neque exercitationem debitis odit. Sequi,
-          natus ex recusandae necessitatibus fuga sunt reprehenderit deserunt
-          eius. Iusto cum eos nesciunt.
+          The PB Census System is a web-based platform designed to support
+          census management in Barangay Pulong Buhangin, enhancing data
+          collection, accuracy, and accessibility with features for data
+          visualization and analysis to aid barangay officials in
+          decision-making.
         </div>
       </div>
     </div>

@@ -3,7 +3,7 @@ import React from "react";
 
 const Page: React.FC = () => {
   return (
-    <div className="flex justify-center w-full h-full relative mt-44 gap-5">
+    <div className="flex justify-center xl:w-full h-full relative mt-44 gap-5 ">
       {data.map((item, index) => (
         <div
           key={index}

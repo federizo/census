@@ -1,4 +1,3 @@
-"use client";
 import React, { useState } from "react";
 import ModalComponent from "./ModalComponent";
 
@@ -19,10 +18,11 @@ const HoverComponent: React.FC<HoverProps> = ({ data }) => {
 
   return (
     <div
-      className="absolute w-full h-full rounded-3xl bg-zinc-800 opacity-0 hover:opacity-100 transition duration-300"
+      className="absolute w-full h-full rounded-3xl md:h-[40rem] bg-zinc-800 z-20 opacity-0 hover:opacity-100 transition duration-100"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
+      {data.category}
       {openModal && <ModalComponent setOpenModal={setOpenModal} data={data} />}
     </div>
   );
