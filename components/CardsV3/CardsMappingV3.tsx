@@ -1,13 +1,28 @@
-import React from "react";
-
+"use client";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const Page: React.FC = () => {
+  const router = useRouter();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  function handleCardClick(href: string) {
+    if (isMounted) {
+      router.push(href);
+    }
+  }
+
   return (
-    <div className="flex justify-center xl:w-full h-full relative mt-44 gap-5 ">
+    <div className="flex justify-center xl:w-full h-full relative mt-20 gap-5 ">
       {data.map((item, index) => (
         <div
           key={index}
           className="h-[500px] w-[320px] text-white relative group overflow-hidden hover:scale-105 duration-300 hover:bg-top border-solid border-2 border-gray-150 rounded-lg"
+          onClick={() => handleCardClick(item.href)}
         >
           <img
             src={item.imageSrc}
@@ -56,7 +71,7 @@ const data = [
     title2: "Pulong Buhangin Census Management System.",
     description:
       "The project PB Census is a Web-Based Census Management System that will optimize the census process by replacing manual data collection and entry with a digital solution.",
-    href: "",
+    href: "/landing-page/pb-census",
     imageSrc:
       "https://dynamicmedia.accenture.com/is/image/accenture/Metadata_image_Fortune_v1:rad-5x3?ts=1727448392184&fit=constrain&dpr=on,1&wid=1600",
   },
@@ -65,7 +80,7 @@ const data = [
     title2: "Pulong Buhangin Census of Population",
     description:
       "Through the PB Census Management System, personnels and officials will be able to visualize data population, sort demographics by various criteria.",
-    href: "",
+    href: "/landing-page/census-graph",
     imageSrc:
       "https://thumbs.dreamstime.com/z/population-growth-chart-graph-density-growing-stick-figure-simple-icons-vector-illustration-men-women-statistics-220810318.jpg",
   },
@@ -74,7 +89,7 @@ const data = [
     title2: "",
     description:
       "The digitize census management process in Barangay Pulong Buhangin will provide a more effective and reliable solution for data collection, storage, and analysis.",
-    href: "",
+    href: "/landing-page/digitalized-census",
     imageSrc:
       "https://nortal.com/wp-content/uploads/2023/11/oman-business-portal_hero-768x433.jpg",
   },
@@ -83,7 +98,7 @@ const data = [
     title2: "Updates from PB Census",
     description:
       "The project PB Census is a Web-Based Census Management System that will optimize the census process by replacing manual data collection and entry with a digital solution.",
-    href: "",
+    href: "/landing-page/news",
     imageSrc:
       "https://dynamicmedia.accenture.com/is/image/accenture/Metadata_image_Fortune_v1:rad-5x3?ts=1727448392184&fit=constrain&dpr=on,1&wid=1600",
   },

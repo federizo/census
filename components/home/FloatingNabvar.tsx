@@ -2,8 +2,8 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import { ThemeSwitcher } from "@/components/theme-switcher";
-import PB from "../../assets/PB.png";
-import PBInverted from "../../assets/PBinverted.png";
+import PB from "../../app/assets/PB.png";
+import PBInverted from "../../app/assets/PBinverted.png";
 import { useTheme } from "next-themes";
 import { Spiral as Hamburger } from "hamburger-react";
 import { Sidebar } from "lucide-react";

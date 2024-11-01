@@ -1,5 +1,5 @@
 import React from "react";
-import FloatingNavbar from "../(home)/components/FloatingNabvar";
+import FloatingNavbar from "../../components/home/FloatingNabvar";
 
 const Page = () => {
   return (
