@@ -4,6 +4,8 @@ import { useTheme } from "next-themes";
 
 import { FaWpforms } from "react-icons/fa";
 import FloatingNavbar from "@/components/home/FloatingNabvar";
+import { IoMdArrowRoundBack } from "react-icons/io";
+import Link from "next/link";
 
 const DigitalizedCensus = () => {
   const { theme, setTheme } = useTheme();
@@ -13,7 +15,17 @@ const DigitalizedCensus = () => {
       <FloatingNavbar />
       <div className="xl:flex grid gap-2 w-full py-10 border-t-[1px] border-b-[1px] xl:px-[5rem] px-[2rem] z-0 ">
         <div className="flex flex-col w-full text-[5rem] ">
-          <h1>Digitalized Census Form</h1>
+          <Link
+            href="/"
+            className={`text-sm flex items-center gap-2 text-gray-800 dark:text-white hover:underline`}
+          >
+            <IoMdArrowRoundBack className="text-[40px]" />
+            <span>Back</span>
+          </Link>
+          <h1 className="items-center xl:flex w-full gap-3">
+            <FaWpforms className="text-[50px] items-center" />
+            Digitalized Census Form
+          </h1>
         </div>
         <div className="flex xl:w-[50%] w-full relative ">
           <div className="xl:absolute bottom-0 flex flex-col gap-2 ">

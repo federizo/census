@@ -17,7 +17,7 @@ const Hero = () => {
         </h1>
       </div>
       <div className="flex xl:w-[50%] w-full relative ">
-        <div className="xl:absolute bottom-0 flex flex-col gap-2 ">
+        <div className="xl:absolute bottom-0 flex flex-col gap-2 text-justify">
           <div
             className={`h-[3px] w-[100px] p-[2px] ${
               theme === "light" ? "bg-black" : "bg-white"

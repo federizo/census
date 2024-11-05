@@ -14,7 +14,7 @@ export default async function Index() {
         <FloatingNavbar />
       </header>
 
-      <div className="z-0 w-full h-full overflow-y-auto items-center  grid-col overflow-hidden ">
+      <div className="z-0 w-full h-full overflow-y-auto items-center grid-col overflow-hidden ">
         <Hero />
         <div className="px-[5rem] flex flex-col">
           <CardsMappingV3 />

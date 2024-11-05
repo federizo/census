@@ -3,36 +3,32 @@ import { supabase } from "@/utils/supabase/config";
 import { v4 as uuidv4 } from "uuid";
 export async function insertDataForm(formData: any) {
   try {
-    const fullname =
-      formData.lname +
-      ", " +
-      formData.fname +
-      " " +
-      formData.mname +
-      " " +
-      formData.sfx +
-      " ";
     const familyMemberId = Math.floor(Math.random() * 10000);
 
     const currentDate = new Date().toISOString();
+
     const { data, error } = await supabase
       .from("FamilyMember")
 
       .insert([
         {
-          Name: fullname,
+          FamilyMemberId: familyMemberId,
+          LastName: formData.lastname,
+          FirstName: formData.firstname,
+          Middlename: formData.middlename,
+          Suffix: formData.suffix,
           FamilyMember: formData.familymember,
+          Birthday: formData.birthday,
           Age: formData.age,
           Gender: formData.gender,
-          Birthday: formData.birthday,
-          CivilStatus: formData.civilstatus,
           Occupation: formData.occupation,
           Education: formData.education,
           Religion: formData.religion,
           Sector: formData.sector,
-          PWD: formData.pwd,
+          CivilStatus: formData.civilstatus,
+          DisabilityType: formData.disabilitytype,
           Lactating: formData.lactating,
-          FamilyMemberId: familyMemberId,
+          LactatingMonths: formData.lactatingmonths,
         },
       ])
       .select();
@@ -66,14 +62,13 @@ export async function insertDataForm(formData: any) {
       .from("Location")
       .insert([
         {
-          LocationId:location,
-          Street:formData.location,
-          Block:formData.block,
-          Lot:formData.lot,
-          Phase:formData.phase,
-          Kilometer:formData.km,
-          SubdivisionName:formData.subdivision,
-
+          LocationId: location,
+          Street: formData.location,
+          Block: formData.block,
+          Lot: formData.lot,
+          Phase: formData.phase,
+          Kilometer: formData.km,
+          SubdivisionName: formData.subdivision,
         },
       ]);
 

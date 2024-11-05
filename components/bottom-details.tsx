@@ -8,7 +8,7 @@ const BottomDetails = () => {
   const barangays = [
     {
       title: "Mag-Asawang Sapa, Santa Maria",
-      Src: "https://scontent.fmnl3-4.fna.fbcdn.net/v/t39.30808-6/308642979_159020213477335_3427730989438843461_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeHhLCzTmD48HU-cN2zFgOStU6frlRiqbeVTp-uVGKpt5eR_QCaFJFBhEV0GzfjgpsZ8ex1k9RMGNgNZ_8SlD4jw&_nc_ohc=cQjYlnYbPpMQ7kNvgGWT0GJ&_nc_zt=23&_nc_ht=scontent.fmnl3-4.fna&_nc_gid=ACMKHj5jvF-4n3dDPYuHxNb&oh=00_AYDvKcfob3E7ZzfDDdPlKlSDtllLN5E8eJIpMbpGllXS_g&oe=6729E050",
+      Src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQedgNfwn936zec9D0mC1r_4CyWzWMV7PHDA&s",
       map: "https://maps.app.goo.gl/j8BZPYCREUPg51Xt9",
     },
     {
@@ -56,7 +56,7 @@ const BottomDetails = () => {
               }}
               className="group bg-cover hover:bg-left bg-center bg-no-repeat h-[200px] w-[200px] bg-slate-600 flex justify-center items-end hover:scale-110 duration-300 cursor-pointer rounded-md"
             >
-              <div className="p-2 font-semibold backdrop-blur-[1px] bg-black bg-opacity-40 group-hover:text-md">
+              <div className="p-2 font-semibold backdrop-blur-[1px] bg-black bg-opacity-40 group-hover:text-md text-white">
                 {item.title}
               </div>
             </div>

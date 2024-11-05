@@ -46,7 +46,7 @@ const Page: React.FC = () => {
                 {item.title2}
               </h2>
             </div>
-            <div className="translate-x-full group-hover:translate-x-0 duration-300 delay-100 flex flex-col justify-between h-full mt-2">
+            <div className="translate-x-full group-hover:translate-x-0 duration-300 delay-100 flex flex-col justify-between h-full mt-2 text-justify">
               <p
                 className={`px-7 w-[95%] ${index === 1 || index === 2 ? "text-black" : "text-white"}`}
               >

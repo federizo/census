@@ -4,6 +4,7 @@ import { useTheme } from "next-themes";
 import { Card } from "./ui/card";
 import { IoPeopleSharp } from "react-icons/io5";
 import { PiCityFill } from "react-icons/pi";
+
 const TableDetails = () => {
   const { theme, setTheme } = useTheme();
 
@@ -25,7 +26,11 @@ const TableDetails = () => {
         </div>
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-center mt-10 gap-5">
-            <Card className="border-[1px] flex gap-10 justify-between items-center p-5 xl:p-10 text-[2rem] h-[150px]">
+            <Card
+              className={`border-[1px] flex gap-10 justify-between items-center p-5 xl:p-10 text-[2rem] h-[150px] ${
+                theme === "light" ? "bg-gray-100" : "bg-zinc-900"
+              }`}
+            >
               <IoPeopleSharp className="text-[3rem]" />
               <div className="flex flex-col">
                 <label>41,218</label>
@@ -34,7 +39,11 @@ const TableDetails = () => {
                 </label>
               </div>
             </Card>
-            <Card className="border-[1px] flex gap-10 justify-between items-center p-5 xl:p-10 text-[2rem] h-[150px]">
+            <Card
+              className={`border-[1px] flex gap-10 justify-between items-center p-5 xl:p-10 text-[2rem] h-[150px] ${
+                theme === "light" ? "bg-gray-100" : "bg-zinc-900"
+              }`}
+            >
               <PiCityFill className="text-[3rem]" />
               <div className="flex flex-col">
                 <label>289,820</label>
@@ -44,16 +53,20 @@ const TableDetails = () => {
               </div>
             </Card>
           </div>
-          <label className="italic font-thin text-[13px] w-full text-center">
+          <label className="italic font-thin text-[13px] w-full text-center ">
             Data on population, and households, are from the Philippine
             Statistics Authority.
           </label>
         </div>
       </div>
-      <div className="xl:w-fit w-full flex flex-col justify-center items-center">
-        <div className="border-[1px] p-3 flex flex-col gap-2 w-fit">
+      <div className="xl:w-fit w-full flex flex-col justify-center items-center ">
+        <div
+          className={`border-[1px] p-3 flex flex-col gap-2 w-fit rounded-md ${
+            theme === "light" ? "bg-gray-100" : "bg-gray-950"
+          }`}
+        >
           <div className="w-full border-[1px] p-2">
-            Data Summary of Santa Maria
+            Data Summary of Pulong Buhangin
           </div>
           <div className="flex gap-10">
             <div className="grid">
@@ -70,7 +83,7 @@ const TableDetails = () => {
               <label>Above Sea Level:</label>
             </div>
             <div className="grid items-end underline underline-offset-1">
-              <label>Baranggay</label>
+              <label>Barangay</label>
               <label>Luzon</label>
               <label>Central Luzon (Region III)</label>
               <label>Bulacan</label>
